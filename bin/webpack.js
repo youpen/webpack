@@ -167,7 +167,7 @@ yargs.parse(process.argv.slice(2), (err, argv, output) => {
 	if(argv.verbose) {
 		argv["display"] = "verbose";
 	}
-	// 此处读取webpack.config.js中的配置
+	// 此处读取webpack.config.js中的配置，处理其中部分参数，以及处理所有命令行参数
 	var options = require("./convert-argv")(yargs, argv);
 
 	function ifArg(name, fn, init) {
@@ -325,13 +325,15 @@ yargs.parse(process.argv.slice(2), (err, argv, output) => {
 				outputOptions.chunkModules = false;
 			}
 		});
-
+		debugger
 		var webpack = require("../lib/webpack.js");
 
 		Error.stackTraceLimit = 30;
 		var lastHash = null;
 		var compiler;
 		try {
+			// 此处再次初始化，如果和webpack.config.js中webpack实现关联起来
+			debugger
 			compiler = webpack(options);
 		} catch(err) {
 			if(err.name === "WebpackOptionsValidationError") {

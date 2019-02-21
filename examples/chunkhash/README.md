@@ -28,6 +28,7 @@ export default 123;
 
 ``` javascript
 var path = require("path");
+debugger
 var webpack = require("../../");
 module.exports = {
 	entry: {

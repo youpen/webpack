@@ -5,7 +5,6 @@ var interpret = require("interpret");
 var prepareOptions = require("../lib/prepareOptions");
 
 module.exports = function(yargs, argv, convertOptions) {
-
 	var options = [];
 
 	// Shortcuts
@@ -73,6 +72,7 @@ module.exports = function(yargs, argv, convertOptions) {
 		}
 	}
 
+	// 以上部分都是在确认webpack.config.js文件的路径
 	if(configFiles.length > 0) {
 		var registerCompiler = function registerCompiler(moduleDescriptor) {
 			if(moduleDescriptor) {
@@ -94,6 +94,8 @@ module.exports = function(yargs, argv, convertOptions) {
 		};
 
 		var requireConfig = function requireConfig(configPath) {
+			// 此处初始化resolver, 顺序： 读取webpack.config.js,然后webpack.config.js中一般会require webpack,所以执行了初始化
+			// 返回webpack.config.js中的参数
 			var options = require(configPath);
 			options = prepareOptions(options, argv);
 			return options;
@@ -109,6 +111,7 @@ module.exports = function(yargs, argv, convertOptions) {
 	if(!configFileLoaded) {
 		return processConfiguredOptions({});
 	} else if(options.length === 1) {
+		// 处理命令行参数，测试entry、设置context
 		return processConfiguredOptions(options[0]);
 	} else {
 		return processConfiguredOptions(options);
@@ -153,6 +156,7 @@ module.exports = function(yargs, argv, convertOptions) {
 		if(argv.context) {
 			options.context = path.resolve(argv.context);
 		}
+		// 此处可以看到默认context的效果
 		if(!options.context) {
 			options.context = process.cwd();
 		}
@@ -183,7 +187,9 @@ module.exports = function(yargs, argv, convertOptions) {
 		return options;
 	}
 
+	// 主要用于处理运行命令时的参数
 	function processOptions(options) {
+		// 此处处理webpack.config.js参数，具体处理可以观察
 		var noOutputFilenameDefined = !options.output || !options.output.filename;
 
 		function ifArg(name, fn, init, finalize) {
@@ -282,7 +288,6 @@ module.exports = function(yargs, argv, convertOptions) {
 				parent[name] = [];
 			}
 		}
-
 		ifArgPair("entry", function(name, entry) {
 			if(typeof options.entry[name] !== "undefined" && options.entry[name] !== null) {
 				options.entry[name] = [].concat(options.entry[name]).concat(entry);
