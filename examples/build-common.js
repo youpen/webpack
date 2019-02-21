@@ -13,7 +13,7 @@ const extraArgs = "";
 
 const targetArgs = global.NO_TARGET_ARGS ? "" : " ./example.js js/output.js";
 const displayReasons = global.NO_REASONS ? "" : " --display-reasons --display-used-exports --display-provided-exports";
-cp.exec(`node ${path.resolve(__dirname, "../bin/webpack.js")} ${displayReasons} --display-chunks --display-max-modules 99999 --display-origins --display-entrypoints --output-public-path "js/" -p ${extraArgs} ${targetArgs}`, function(error, stdout, stderr) {
+cp.exec(`node --inspect-brk ${path.resolve(__dirname, "../bin/webpack.js")} ${displayReasons} --display-chunks --display-max-modules 99999 --display-origins --display-entrypoints --output-public-path "js/" -p ${extraArgs} ${targetArgs}`, function(error, stdout, stderr) {
 	if(stderr)
 		console.log(stderr);
 	if(error !== null)

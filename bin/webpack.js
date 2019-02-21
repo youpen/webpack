@@ -167,7 +167,7 @@ yargs.parse(process.argv.slice(2), (err, argv, output) => {
 	if(argv.verbose) {
 		argv["display"] = "verbose";
 	}
-
+	// 此处读取webpack.config.js中的配置
 	var options = require("./convert-argv")(yargs, argv);
 
 	function ifArg(name, fn, init) {
